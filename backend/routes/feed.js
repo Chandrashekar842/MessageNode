@@ -1,8 +1,18 @@
-import express from 'express'
-import { addPost, getPosts } from '../controllers/feed.js'
+import express from "express";
+import { check, body } from "express-validator";
+import { addPost, getPosts, getPost } from "../controllers/feed.js";
 
-export const router = express.Router()
+export const router = express.Router();
 
-router.get('/posts', getPosts)
+router.get("/posts", getPosts);
 
-router.post('/post', addPost)
+router.post(
+  "/post",
+  [
+    body("title").trim().isLength({ min: 5  }),
+    body("content").trim().isLength({ min: 5 }),
+  ],
+  addPost
+);
+
+router.get('/post/:postId', getPost)
