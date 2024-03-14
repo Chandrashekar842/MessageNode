@@ -8,6 +8,7 @@ import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 
 import { router } from "./routes/feed.js";
+import { authRouter } from "./routes/auth.js";
 
 const app = express();
 
@@ -34,7 +35,7 @@ const fileFilter = (req, file, cb) => {
 
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
-console.log(__dirname);
+
 app.use(bodyParser.json());
 
 app.use(
@@ -52,12 +53,16 @@ app.use((req, res, next) => {
 
 app.use("/feed", router);
 
+app.use("/auth", authRouter)
+
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode;
   const message = error.message;
+  const data = error.data
   res.status(status).json({
     message: message,
+    data: data
   });
 });
 

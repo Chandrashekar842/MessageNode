@@ -1,13 +1,15 @@
 import express from "express";
 import { check, body } from "express-validator";
 import { addPost, getPosts, getPost, updatePost, deletePost } from "../controllers/feed.js";
+import { verifyToken } from "../middleware/is-auth.js";
 
 export const router = express.Router();
 
-router.get("/posts", getPosts);
+router.get("/posts", verifyToken, getPosts);
 
 router.post(
   "/post",
+  verifyToken,
   [
     body("title").trim().isLength({ min: 5 }),
     body("content").trim().isLength({ min: 5 }),
@@ -15,10 +17,11 @@ router.post(
   addPost
 );
 
-router.get("/post/:postId", getPost);
+router.get("/post/:postId", verifyToken, getPost);
 
 router.put(
   "/post/:postId",
+  verifyToken,
   [
     body("title").trim().isLength({ min: 5 }),
     body("content").trim().isLength({ min: 5 }),
@@ -26,4 +29,4 @@ router.put(
   updatePost
 );
 
-router.delete('/post/:postId', deletePost)
+router.delete('/post/:postId', verifyToken, deletePost)
