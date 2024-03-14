@@ -1,6 +1,6 @@
 import express from "express";
 import { check, body } from "express-validator";
-import { addPost, getPosts, getPost, updatePost } from "../controllers/feed.js";
+import { addPost, getPosts, getPost, updatePost, deletePost } from "../controllers/feed.js";
 
 export const router = express.Router();
 
@@ -25,3 +25,5 @@ router.put(
   ],
   updatePost
 );
+
+router.delete('/post/:postId', deletePost)
